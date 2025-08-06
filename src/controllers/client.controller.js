@@ -29,10 +29,21 @@ export const createClient = AsyncHandler(async (req, res, next) => {
 
 export const getClient = AsyncHandler(async (req, res, next) => {
   const clients = await ClientModel.find();
+  return res.status(HTTPSTATUS.OK).json({
+    success: true,
+    clients,
+  });
 });
 export const getClientById = AsyncHandler(async (req, res, next) => {
-  const client = await Client.findById(req.params.id);
-  if (!client) return res.status(404).json({ message: 'Client not found' });
+  const client = await ClientModel.findById(req.params.id);
+  if (!client) {
+    throw new NotFoundException("Client not found'");
+  }
+
+  return res.status(HTTPSTATUS.OK).json({
+    success: true,
+    client,
+  });
 });
 
 export const updateClientById = AsyncHandler(async (req, res, next) => {
@@ -43,7 +54,7 @@ export const updateClientById = AsyncHandler(async (req, res, next) => {
   if (!client) {
     throw new NotFoundException('Client not found');
   }
-  return res.status(HTTPSTATUS.CREATED).json({
+  return res.status(HTTPSTATUS.OK).json({
     success: true,
     message: 'Client updated successfully',
     client,
@@ -51,6 +62,14 @@ export const updateClientById = AsyncHandler(async (req, res, next) => {
 });
 
 export const deleteClient = AsyncHandler(async (req, res, next) => {
-  const client = await Client.findByIdAndDelete(req.params.id);
-  if (!client) return res.status(404).json({ message: 'Client not found' });
+  const client = await ClientModel.findByIdAndDelete(req.params.id);
+  if (!client) {
+    throw new NotFoundException('Client not found');
+  }
+
+  return res.status(HTTPSTATUS.OK).json({
+    success: true,
+    message: 'Client deleted successfully',
+    client,
+  });
 });
