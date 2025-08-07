@@ -12,7 +12,7 @@ export const createClient = AsyncHandler(async (req, res, next) => {
   const body = createClientSchema.parse({ ...req.body });
 
   //check if there is existing client with provided email
-  const existingClient = ClientModel.findOne({ email: body.email });
+  const existingClient = await ClientModel.findOne({ email: body.email });
 
   if (existingClient) {
     throw new BadRequestException('Client already exist for this email');
