@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import crypto from 'crypto';
-import RefreshTokenModel from '../modules/auth/model/refreshToken.model.js';
+import RefreshTokenModel from '../models/refreshToken.model.js';
 import { config } from '../configs/app.config.js';
 
 const generateJwtToken = async (user) => {

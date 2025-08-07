@@ -1,8 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-
-import { comparePassword } from '../../../utils/argonPassword.js';
-import { UserRoleEnum } from '../enums/user-role.enum.js';
-import { hashPassword } from '../utils/argonPassword.js';
+import { hashPassword, comparePassword } from '../utils/argonPassword.js';
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,8 +17,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: Object.values(UserRoleEnum),
-      default: 'USER',
+      enum: ['user', 'admin'],
+      default: 'user',
       required: true,
     },
   },

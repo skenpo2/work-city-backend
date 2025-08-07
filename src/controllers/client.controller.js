@@ -28,12 +28,31 @@ export const createClient = AsyncHandler(async (req, res, next) => {
 });
 
 export const getClient = AsyncHandler(async (req, res, next) => {
-  const clients = await ClientModel.find();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const sortBy = req.query.sortBy || 'createdAt';
+  const order = req.query.order === 'desc' ? -1 : 1;
+
+  const skip = (page - 1) * limit;
+
+  const [clients, totalClients] = await Promise.all([
+    ClientModel.find()
+      .sort({ [sortBy]: order })
+      .skip(skip)
+      .limit(limit),
+    ClientModel.countDocuments(),
+  ]);
+
   return res.status(HTTPSTATUS.OK).json({
     success: true,
+    page,
+    limit,
+    totalPages: Math.ceil(totalClients / limit),
+    totalClients,
     clients,
   });
 });
+
 export const getClientById = AsyncHandler(async (req, res, next) => {
   const client = await ClientModel.findById(req.params.id);
   if (!client) {

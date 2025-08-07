@@ -16,7 +16,7 @@ app.use(helmet());
 // CORS
 app.use(
   cors({
-    origin: '*', // Allow all for demo; restrict in production
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
